@@ -92,7 +92,6 @@
 我们来看看：一个最简单的**逻辑回归**建模，要经历哪些**典型步骤**
 
 ### 3.1 利用pandas.read_csv()读取数据
-
 ```python
 app_train = pd.read_csv('../input/application_train.csv')
 app_test = pd.read_csv('../input/application_test.csv')
@@ -107,7 +106,6 @@ credit_card_balance = pd.read_csv('../input/credit_card_balance.csv')
 ### 3.2 数据处理
 
 #### (1) 衍生变量：统计客户的历史贷款次数
-
 ```python
 previous_loan_counts = bureau.groupby('SK_ID_CURR', as_index=False)['SK_ID_BUREAU']\
   .count().rename(columns = {'SK_ID_BUREAU': 'previous_loan_counts'})
@@ -122,7 +120,6 @@ previous_loan_counts = bureau.groupby('SK_ID_CURR', as_index=False)['SK_ID_BUREA
 #### (2) 继续对多张表按照客户编号SK_ID_CURR进行groupby
 
 ​	每个客户对应一行特征，这样依据*客户编号sk_id_curr*做横向merge简单好理解。
-
 ```python
 # Grouping data  so  that we can merge all the files in 1 dataset
 data_bureau_agg=bureau.groupby(by='SK_ID_CURR').mean()
@@ -137,7 +134,6 @@ data_bureau_agg.head()
 ![data_bureau_agg](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/image-20200412001603264.png)
 
 #### (3) 做left join
-
 ```python
 def merge(df):
     df = df.join(data_bureau_agg, how='left', on='SK_ID_CURR', lsuffix='1', rsuffix='2') 
@@ -185,8 +181,6 @@ all_data = transform_app(all_data)
 ```
 
 数值变量进行值域放缩**MinMaxScaler()**
-
-
 ```python
 from sklearn.preprocessing import MinMaxScaler
 def encoder(df):
@@ -200,16 +194,12 @@ all_data = encoder(all_data)
 ```
 
 类别型变量进行**LabelEncoder()**、**get_dummies()**
-
-
 ```python
 from sklearn.preprocessing import LabelEncoder
 all_data[col] = LabelEncoder().fit_transform(all_data[col])
 all_data = pd.get_dummies(all_data)
 ```
-
 ### 3.3 训练模型：逻辑回归  
-
 逻辑回归：LogisticRegression()
 
 ```python
@@ -218,7 +208,7 @@ logreg = LogisticRegression(random_state=0, class_weight='balanced', C=100)
 logreg.fit(X_train, Y_train)
 Y_pred = logreg.predict_proba(X_test)[:,1]
 ```
-
+这是一个验证集AUC=0.75的方案，过程比较基础，请问：
 `LogisticRegression(random_state=0, class_weight='balanced', C=100)`里面的参数设置起到什么作用呢？
 
 # 四、从逻辑回归 → XGBoost
