@@ -1,5 +1,6 @@
-# Home Credit Default Risk 沙龙分享2020-0414     刘光志、刘德华
+# Home Credit Default Risk 沙龙分享2020-0414  
 - - - - - - - - - - - - - - - - - - - - - - - - - - 
+                            —————   刘光志、刘德华
 #  流程速览：
 ### 1. 逛一下Kaggle网站  （10min）
 
