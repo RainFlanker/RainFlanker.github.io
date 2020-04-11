@@ -81,7 +81,9 @@
   - **客户历史申请表**previous_application
   - **客户先前信用卡还款记录** installments_payments
 
+
 ![数据表关系介绍](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/image-20200411233751953.png)
+
 
 #### (3)  结果评判标准
 
@@ -133,6 +135,7 @@ data_bureau_agg.head()
 
 ![data_bureau_agg](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/image-20200412001603264.png)
 
+
 #### (3) 做left join
 ```python
 def merge(df):
@@ -150,6 +153,7 @@ display(train.head())
 ```
 
 ![train.head](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/image-20200412002545469.png)
+
 #### (4) 变量取值预处理
 
 ​	负的天数调整为**正数**，缺失值**fillna()**
