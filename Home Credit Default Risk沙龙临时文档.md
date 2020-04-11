@@ -109,7 +109,8 @@ credit_card_balance = pd.read_csv('../input/credit_card_balance.csv')
 #### (1) 衍生变量：统计客户的历史贷款次数
 
 ```python
-previous_loan_counts = bureau.groupby('SK_ID_CURR', as_index=False)['SK_ID_BUREAU'].count().rename(columns = {'SK_ID_BUREAU': 'previous_loan_counts'})
+previous_loan_counts = bureau.groupby('SK_ID_CURR', as_index=False)['SK_ID_BUREAU']\
+  .count().rename(columns = {'SK_ID_BUREAU': 'previous_loan_counts'})
 ```
 
 | 客户编号 SK_ID_CURR | Previous_loan_counts |
@@ -157,8 +158,8 @@ display(train.head())
 
 ​	负的天数调整为**正数**，缺失值**fillna()**
 
-```
-# Now we will convert days employed and days registration and days id publish to a positive no. 
+```python 
+ # Now we will convert days employed and days registration and days id publish to a positive no. 
 def correct_birth(df): #负号并转换成年份   
     df['DAYS_BIRTH'] = round((df['DAYS_BIRTH'] * (-1))/365)
     return df
@@ -168,8 +169,8 @@ def convert_abs(df): #取绝对值
     df['DAYS_ID_PUBLISH'] = abs(df['DAYS_ID_PUBLISH'])
     df['DAYS_LAST_PHONE_CHANGE'] = abs(df['DAYS_LAST_PHONE_CHANGE'])
     return df
-# Now we will fill misisng values in OWN_CAR_AGE. 
-#Most probably there will be missing values if the person does not own a car. So we will fill with 0
+ # Now we will fill misisng values in OWN_CAR_AGE. 
+ #Most probably there will be missing values if the person does not own a car. So we will fill with 0
 def missing(df):  #填充缺失值
     features = ['previous_loan_counts','NONLIVINGAPARTMENTS_MEDI', 'NONLIVINGAPARTMENTS_AVG','NONLIVINGAREA_MEDI','OWN_CAR_AGE']
     for f in features:
@@ -180,13 +181,11 @@ def transform_app(df):
     df = convert_abs(df)
     df = missing(df)
     return df
-
-   
-
 all_data = transform_app(all_data)
 ```
 
- 	数值变量进行值域放缩**MinMaxScaler()**
+数值变量进行值域放缩**MinMaxScaler()**
+
 
 ```python
 from sklearn.preprocessing import MinMaxScaler
@@ -197,11 +196,11 @@ def encoder(df):
     features_transform[numerical] = scaler.fit_transform(df[numerical])
     display(features_transform.head(n = 5))
     return df
-
 all_data = encoder(all_data)
 ```
 
- 	类别型变量进行**LabelEncoder()**、**get_dummies()**
+类别型变量进行**LabelEncoder()**、**get_dummies()**
+
 
 ```python
 from sklearn.preprocessing import LabelEncoder
