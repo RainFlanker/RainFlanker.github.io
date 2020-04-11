@@ -212,7 +212,8 @@ logreg = LogisticRegression(random_state=0, class_weight='balanced', C=100)
 logreg.fit(X_train, Y_train)
 Y_pred = logreg.predict_proba(X_test)[:,1]
 ```
-这是一个验证集AUC=0.75的方案，过程比较基础，请问：
+这是一个验证集AUC=0.75的方案，过程比较基础，  
+请问：    
 `LogisticRegression(random_state=0, class_weight='balanced', C=100)`里面的参数设置起到什么作用呢？
 
 # 四、从逻辑回归 → XGBoost
