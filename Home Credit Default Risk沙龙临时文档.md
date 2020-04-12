@@ -209,17 +209,21 @@ Y_pred = logreg.predict_proba(X_test)[:,1]
 > **penalty**：**惩罚项**
 > 	str类型，默认为l2。newton-cg、sag和lbfgs求解算法只支持L2规范,L2假设的模型参数满足高斯分布。
 > 	l1:L1G规范假设的是模型的参数满足拉普拉斯分布.
+
 > **tol**：**停止求解的标准**，float类型，默认为1e-4。就是求解到多少的时候，停止，认为已经求出最优解。
+
 > **c**：**正则化系数λ的倒数**，float类型，默认为1.0。必须是正浮点型数。像SVM一样，越小的数值表示越强的正则化。
+
 > **fit_intercept**：是否存在截距或偏差，bool类型，默认为True。
+
 > ==**class_ weight**==：
->
 > ​	用于标示分类模型中**各种类型的权重**，可以是一个字典或者’balanced’字符串，默认为不输入，也就是不考	虑权重，即为None。
 > ​	如果选择输入的话，可以选择balanced让类库自己计算类型权重，或者自己输入各个类型的权重。
 >
 > **random_state**：随机数种子，int类型，可选参数，默认为无，仅在正则化优化算法为sag,liblinear时有用。
 >
 > **max_iter**：算法收敛最大迭代次数，int类型，默认为10。仅在正则化优化算法为newton-cg, sag和lbfgs才	有用，算法收敛的最大迭代次数。
+
 > **multi_class**：分类方式选择参数，str类型，可选参数为ovr和multinomial，默认为ovr。ovr即前面提到的	one-vs-rest(OvR)，而multinomial即前面提到的many-vs-many(MvM)，区别主要在**<u>多元逻辑回归</u>**上。
 
 ### 3.2 Boosting策略
