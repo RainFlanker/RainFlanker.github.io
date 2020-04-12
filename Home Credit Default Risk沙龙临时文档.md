@@ -320,11 +320,11 @@ eatures, feature_names = ft.dfs(entityset = es, target_entity = 'clients', agg_p
 
 ### 5.1 主流高分操作：
 
-- Stacking
+- **Stacking**
 
   ![Stacking, Blending and Stacked Generalization](https://www.chioka.in/wp-content/uploads/2013/09/stacking.png)
 
-- Bagging
+- **Bagging**
 
   Bootstrap Aggregating的缩写，采用一种自助采样的方法（boostrap sampling）每次从数据集中随机选择一个subset，然后放回初始数据集，下次取时，该样本仍然有一定概率取到。然后根据对每个subset训练出一个基学习器，然后将这些基学习器进行结合（算术、几何平均等）
 
@@ -342,7 +342,7 @@ eatures, feature_names = ft.dfs(entityset = es, target_entity = 'clients', agg_p
 
 - **挖掘利率信息**(还是上面那个第5名)
 
- 关键点是AMT*ANNUITY 包含了利率， 基于 AMT*CREDIT, AMT*ANNUITY, and CNT*PAYMENT 我们可以衍生出利率。
+   关键点是AMT*ANNUITY 包含了利率， 基于 AMT*CREDIT, AMT*ANNUITY, and CNT*PAYMENT 我们可以衍生出利率。
 
 ```python
 prev_app['INTEREST'] = prev_app['CNT_PAYMENT']*prev_app['AMT_ANNUITY'] \
