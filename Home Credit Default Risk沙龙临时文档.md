@@ -283,3 +283,98 @@ Y_pred = logreg.predict_proba(X_test)[:,1]
 > **alpha**：默认是0，别名是reg_alpha，L1 正则化项的权重系数，越大模型越保守；
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# 四、特征工程与Featuretools
+
+这是一个一时半会说不完的门类，简单来说：
+
+- 分析数据、处理数据
+- 衍生变量、无中生有
+- 筛选变量、万里挑一  
+
+### 4.1 一个很厉害的工具：Featuretools
+
+```python
+! pip install featuretools
+import featuretools as ft
+#创建实体
+es = ft.EntitySet(id = 'clients')
+#添加clients实体
+es = es.entity_from_dataframe(entity_id = 'clients', dataframe = clients, 
+                              index = 'client_id', time_index = 'joined')
+#聚合特征，通过指定聚合agg_primitives和转换trans_primitives生成新特征
+eatures, feature_names = ft.dfs(entityset = es, target_entity = 'clients', agg_primitives = ['mean', 'max', 'percent_true', 'last'], trans_primitives = ['subtract', 'divide'])
+#聚合agg：sum、mean
+#转换trans：相加、相减、相除等
+```
+
+### 4.2 试试自编码器
+
+1. **线性**自编码器：PCA
+2. **非线性**自编码器：神经网络、树模型等
+
+![image-20200412210058040](/Users/macintoshhd/Library/Application Support/typora-user-images/image-20200412210058040.png)
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+# 五、“剑走偏锋”还是旁门左道
+
+### 5.1 主流高分操作：
+
+- Stacking
+
+  ![Stacking, Blending and Stacked Generalization](https://www.chioka.in/wp-content/uploads/2013/09/stacking.png)
+
+- Bagging
+
+  Bootstrap Aggregating的缩写，采用一种自助采样的方法（boostrap sampling）每次从数据集中随机选择一个subset，然后放回初始数据集，下次取时，该样本仍然有一定概率取到。然后根据对每个subset训练出一个基学习器，然后将这些基学习器进行结合（算术、几何平均等）
+
+### 5.2 百花齐放之“剑走偏锋”：
+
+- **用户画像特征：**
+
+  第5名 (Kraków, Lublin i Zhabinka)
+
+  原贴: [Overview of the 5th solution +0.004 to CV/Private LB of your model](https://link.zhihu.com/?target=https%3A//www.kaggle.com/c/home-credit-default-risk/discussion/64625)
+
+  - 神经网络构建用户画像，加入stacking
+
+  来自不同表格的信息交互很难通过人为判断进行提取, 因此尝试用NN构建用户画像, 将其转化为用户分类问题. 在每张数据表上(application表除外)都可以构建一个用户的向量(每个月的数据), 然后将这些向量合并到一起, 得到一个较为稀疏的用户画像. 然后构建如下NN: (1) 对每个向量进行normalization: 除以最大值; (2) 输入为96个向量, 每个月为一个向量; (3) 1维卷积层(Conv1D); (4) Bidirectional LSTM; (5) Dense层; (6) 输出.
+
+- **挖掘利率信息**(还是上面那个第5名)
+
+ 关键点是AMT*ANNUITY 包含了利率， 基于 AMT*CREDIT, AMT*ANNUITY, and CNT*PAYMENT 我们可以衍生出利率。
+
+```python
+prev_app['INTEREST'] = prev_app['CNT_PAYMENT']*prev_app['AMT_ANNUITY'] \
+												-prev_app['AMT_CREDIT']
+prev_app['INTEREST_RATE'] = 2*12*prev_app['INTEREST']/(prev_app['AMT_CREDIT']*\
+                                                       (prev_app['CNT_PAYMENT']+1))
+prev_app['INTEREST_SHARE'] = prev_app['INTEREST']/prev_app['AMT_CREDIT']
+```
+
+- **Pseudo Data Augmentation**破解违约定义(一个日本小哥)
+
+   第27名 (nyanp)
+
+  原贴: [Pseudo Data Augmentation (27th place short writeup)](https://link.zhihu.com/?target=https%3A//www.kaggle.com/c/home-credit-default-risk/discussion/64693)
+
+  这哥们有点意思：
+
+  训练模型去找**违约定义**里面的未知参数**X、Y**，然后通过把没有打标的**previous历史**客户记录全**打上标**，样本就变多了。
+
+​	 ***打标为1：***
+
+```python
+客户存在还款困难，定义如下：
+he/she had late payment more than **X** days on at least one of the first **Y** installments of the loan in our sample,
+```
+
+​	***打标为0：***
+
+```
+所有其他情况
+```
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+# 六、尽情讨论
