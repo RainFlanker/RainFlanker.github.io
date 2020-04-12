@@ -19,10 +19,9 @@
 - 2min ：-----**讨论**-----
 
 #### 4. 特征工程与featuretools （10min）
-- 2min ：Featuretools
-- 3min ：自编码器
-- 2min ：“业务含义”造变量
-- 3min ：-----**讨论**-----
+- 4min ：Featuretools
+- 4min ：自编码器
+- 2min ：-----**讨论**-----
 
 #### 5. “剑走偏锋”还是“旁门左道”（10min）
 - 4min ：主流高分方案： **stacking** & **blending**
@@ -312,7 +311,7 @@ eatures, feature_names = ft.dfs(entityset = es, target_entity = 'clients', agg_p
 1. **线性**自编码器：PCA
 2. **非线性**自编码器：神经网络、树模型等
 
-![image-20200412210058040](/Users/macintoshhd/Library/Application Support/typora-user-images/image-20200412210058040.png)
+![自编码器](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8.png)
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
