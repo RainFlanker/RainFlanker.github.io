@@ -53,7 +53,7 @@
   - **客户先前信用卡还款记录** installments_payments
 
 
-![数据表关系介绍](https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Fandersy005%2Fkaggle-notebooks%2Ftree%2Fmaster%2Fcompetitions%2FHome-Credit-Default-Risk&psig=AOvVaw35CSQyQiPC971Mp-ffb0AI&ust=1586791049489000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKiYyMGX4-gCFQAAAAAdAAAAABAH)
+![数据表关系介绍](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/homecreditdefaultrisk%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%85%B3%E7%B3%BB.png)
 
 
 #### (3)  结果评判标准
