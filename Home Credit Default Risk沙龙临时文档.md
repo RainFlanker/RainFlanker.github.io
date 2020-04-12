@@ -188,5 +188,121 @@ Y_pred = logreg.predict_proba(X_test)[:,1]
 请问：    
 `LogisticRegression(random_state=0, class_weight='balanced', C=100)`里面的参数设置起到什么作用呢？
 
-# 三、从逻辑回归 → XGBoost
+# 三、从逻辑回归 → XGBoost 
 
+### 3.1 逻辑回归Logistic Regression
+
+$\mathrm{In} \frac{PD}{1-PD}=w^T*x + b$
+
+$\mathrm{In}  \frac{p(y=1|x)}{p(y=0|x)}=w^T*x + b$
+
+那么*w*和*b*是怎么求呢，和**OLS**一样吗？
+
+- 直接用MSE作为损失函数是==非凸==的！
+
+- 引入**极大似然估计**：<u>***已知结果，去反推最大概率导致该结果的参数***</u>
+
+$l(w, b) =\prod_{i=1}^{m}\; p(y_{i}|x_{i}; w, b) $      ----------- **每个样本的取值概率相乘**
+
+**LogLoss（对数损失函数）：**
+
+$LogLoss=L(w, b) =\mathrm{In}\;l(w, b)=\sum_{i=1}^{m}\mathrm{In}\; p(y_{i}|x_{i}; w, b) $  ------- **对数运算In：连乘$\prod$→累加$\sum$**
+
+$p(y_{i}|x_{i}; w, b)=y_{i}\frac{e^{w^Tx+b}}{1+e^{w^Tx+b}}+(1-y_{i})\frac{1}{1+e^{w^Tx+b}}$
+
+ ***找出$L(w,\;b)$似然函数最大时所对应的w, b。***
+
+基本上都是基于**一阶梯度、二阶梯度**迭代寻找w, b；
+
+回到`sklearn.linear_model.LogisticRegression()`的参数上：
+
+> **solver**：优化算法选择
+>
+> - *liblinear*：使用了开源的liblinear库实现，内部使用了坐标轴下降法来迭代优化损失函数。
+> - *lbfgs*：拟牛顿法的一种，利用损失函数二阶导数矩阵即海森矩阵来迭代优化损失函数。
+> - *newton-cg*：也是牛顿法家族的一种，利用损失函数二阶导数矩阵即海森矩阵来迭代优化损失函数。只用于L2
+> - *sag*：即随机平均梯度下降，是梯度下降法的变种，和普通梯度下降法的区别是每次迭代仅仅用一部分的样本来计算梯度，适合于样本数据多的时候。只用于L2
+> - *saga*：线性收敛的随机优化算法的的变重。只用于L2
+>
+> **penalty**：**惩罚项**
+> 	str类型，默认为l2。newton-cg、sag和lbfgs求解算法只支持L2规范,L2假设的模型参数满足高斯分布。
+> 	l1:L1G规范假设的是模型的参数满足拉普拉斯分布.
+> **tol**：**停止求解的标准**，float类型，默认为1e-4。就是求解到多少的时候，停止，认为已经求出最优解。
+> **c**：**正则化系数λ的倒数**，float类型，默认为1.0。必须是正浮点型数。像SVM一样，越小的数值表示越强的正则化。
+> **fit_intercept**：是否存在截距或偏差，bool类型，默认为True。
+> ==**class_ weight**==：
+>
+> ​	用于标示分类模型中**各种类型的权重**，可以是一个字典或者’balanced’字符串，默认为不输入，也就是不考	虑权重，即为None。
+> ​	如果选择输入的话，可以选择balanced让类库自己计算类型权重，或者自己输入各个类型的权重。
+>
+> **random_state**：随机数种子，int类型，可选参数，默认为无，仅在正则化优化算法为sag,liblinear时有用。
+>
+> **max_iter**：算法收敛最大迭代次数，int类型，默认为10。仅在正则化优化算法为newton-cg, sag和lbfgs才	有用，算法收敛的最大迭代次数。
+> **multi_class**：分类方式选择参数，str类型，可选参数为ovr和multinomial，默认为ovr。ovr即前面提到的	one-vs-rest(OvR)，而multinomial即前面提到的many-vs-many(MvM)，区别主要在**<u>多元逻辑回归</u>**上。
+
+### 3.2 Boosting策略
+
+我们总是能听到Catboost、XGBoost、LightGBM、GBDT这类：
+
+以**决策树**模型为基学习器，还带着个**Boost**为形容词的高大上算法，我们快速了解一下吧！
+
+#### (1) CART (Classification & Regression Tree)：一个能回归也能分类的树模型
+
+**CART**作为Boosting策略使用最广泛的基学习器：
+
+- 用于**回归** *regression*：最小化MSE（均方误差）
+- 用于**分类** *classification*：最小化GINI系数
+
+#### (2) 作用在梯度上的Boosting （Gradient Boosting）
+
+**后一个**基学习器   → ***<u>拟合</u>***→   **前一个**基学习器的**残差**
+
+`这里的残差在工程上一般定义为：损失函数的负梯度`
+
+![image-20200412192901823](/Users/macintoshhd/Library/Application Support/typora-user-images/image-20200412192901823.png)
+
+#### （3）瞅一瞅XGBoost
+
+1. 目标函数：***LogLoss***(对数损失函数)  **+**  ***Regularization***(正则项)
+
+$obj(\theta)=\sum{[y_i \mathrm{In}(1+e^{-\hat{y_i}})+(1-y_i)\mathrm{In}(1+e^{\hat{y_i}})]}+\sum\Omega(f_k)$
+
+2. 部分参数一览
+
+   ```python
+   import xgboost as xgb
+   xgb.XGBRegressor({'n_estimators': 500,'eta': 0.3,  'gamma': 0, 'max_depth': 6,\
+                     'reg_lambda': 1, 'reg_alpha': 0,'seed': 33})
+   #采样、叶子节点细节的相关参数就暂时忽略吧：
+   #'min_child_weight': 1, 'colsample_bytree': 1, 'colsample_bylevel': 1, 'subsample': 1
+   ```
+
+> **n_estimators**：弱学习器的数量
+>
+> **max_depth**：默认是6，树的最大深度，值越大，越容易过拟合；[0，∞]
+>
+> **eta** ： 默认是0.3，别名是 **leanring_rate**，更新过程中用到的收缩步长，在每次提升计算之后，算法会直接获得新特征的权重。 eta通过缩减特征的权重使提升计算过程更加保守；[0,1]
+>
+> **seed**：随机数种子，相同的种子可以复现随机结果，用于调参！
+>
+> ----------------------------------------以下是**正则项**参数---------------------------
+>
+> 为大家贴心的准备了**正则项**公式：
+>
+> $\Omega(f)=\sum[\gamma T+\frac{1}{2}\lambda \left \| w \right \|_{2}+\alpha \left \|w  \right \|_{1}]$
+>
+> **gamma**：默认是0，别名是 min_split_loss，gamma值越大，算法越保守（越不容易过拟合）；[0，∞]
+>
+> **lambda**：默认是1，别名是reg_lambda，L2 正则化项的权重系数，越大模型越保守；
+>
+> **alpha**：默认是0，别名是reg_alpha，L1 正则化项的权重系数，越大模型越保守；
+>
+> 
+>
+> -----------------------------------------**以下可以不看**-----------------------------------------------------
+>
+> min_child_weight：默认是1，决定最小叶子节点样本权重和，加权和低于这个值时，就不再分裂产生新的叶子节点。当它的值较大时，可以避免模型学习到局部的特殊样本。但如果这个值过高，会导致欠拟合。[0，∞]
+> max_delta_step：默认是0，这参数限制每颗树权重改变的最大步长。如果是 0 意味着没有约束。如果是正值那么这个算法会更保守，通常不需要设置。[0，∞]
+> subsample：默认是1，这个参数控制对于每棵树，随机采样的比例。减小这个参数的值算法会更加保守，避免过拟合。但是这个值设置的过小，它可能会导致欠拟合。 (0,1]
+> colsample_bytree：默认是1，用来控制每颗树随机采样的列数的占比； (0,1]
+> colsample_bylevel：默认是1，用来控制的每一级的每一次分裂，对列数的采样的占比； (0,1]
