@@ -53,7 +53,7 @@
   - **客户先前信用卡还款记录** installments_payments
 
 
-![数据表关系介绍](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/homecreditdefaultrisk%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%85%B3%E7%B3%BB.png)
+![数据表关系介绍](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/home%20credit%20%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%85%B3%E7%B3%BB.png)
 
 
 #### (3)  结果评判标准
