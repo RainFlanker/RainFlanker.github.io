@@ -192,27 +192,9 @@ Y_pred = logreg.predict_proba(X_test)[:,1]
 
 ### 3.1 逻辑回归Logistic Regression
 
-$\mathrm{In} \frac{PD}{1-PD}=w^T*x + b$
+![逻辑回归公式](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E5%85%AC%E5%BC%8F-%E5%9B%9E%E5%88%B0sklearn.png)
 
-$\mathrm{In}  \frac{p(y=1|x)}{p(y=0|x)}=w^T*x + b$
-
-那么*w*和*b*是怎么求呢，和**OLS**一样吗？
-
-- 直接用MSE作为损失函数是==非凸==的！
-
-- 引入**极大似然估计**：<u>***已知结果，去反推最大概率导致该结果的参数***</u>
-
-$l(w, b) =\prod_{i=1}^{m}\; p(y_{i}|x_{i}; w, b) $      ----------- **每个样本的取值概率相乘**
-
-**LogLoss（对数损失函数）：**
-
-$LogLoss=L(w, b) =\mathrm{In}\;l(w, b)=\sum_{i=1}^{m}\mathrm{In}\; p(y_{i}|x_{i}; w, b) $  ------- **对数运算In：连乘$\prod$→累加$\sum$**
-
-$p(y_{i}|x_{i}; w, b)=y_{i}\frac{e^{w^Tx+b}}{1+e^{w^Tx+b}}+(1-y_{i})\frac{1}{1+e^{w^Tx+b}}$
-
- ***找出$L(w,\;b)$似然函数最大时所对应的w, b。***
-
-基本上都是基于**一阶梯度、二阶梯度**迭代寻找w, b；
+大都是：基于**一阶梯度、二阶梯度**迭代寻找w, b；
 
 回到`sklearn.linear_model.LogisticRegression()`的参数上：
 
@@ -259,13 +241,12 @@ $p(y_{i}|x_{i}; w, b)=y_{i}\frac{e^{w^Tx+b}}{1+e^{w^Tx+b}}+(1-y_{i})\frac{1}{1+e
 
 `这里的残差在工程上一般定义为：损失函数的负梯度`
 
-![image-20200412192901823](/Users/macintoshhd/Library/Application Support/typora-user-images/image-20200412192901823.png)
+![XGB梯度提升示意图](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/XGB%E6%8F%90%E5%8D%87%E7%A4%BA%E6%84%8F%E5%9B%BE.png)
 
 #### （3）瞅一瞅XGBoost
 
 1. 目标函数：***LogLoss***(对数损失函数)  **+**  ***Regularization***(正则项)
-
-$obj(\theta)=\sum{[y_i \mathrm{In}(1+e^{-\hat{y_i}})+(1-y_i)\mathrm{In}(1+e^{\hat{y_i}})]}+\sum\Omega(f_k)$
+![XGboost公式](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/XGBoost%E5%85%AC%E5%BC%8F.png)
 
 2. 部分参数一览
 
@@ -285,11 +266,7 @@ $obj(\theta)=\sum{[y_i \mathrm{In}(1+e^{-\hat{y_i}})+(1-y_i)\mathrm{In}(1+e^{\ha
 >
 > **seed**：随机数种子，相同的种子可以复现随机结果，用于调参！
 >
-> ----------------------------------------以下是**正则项**参数---------------------------
->
-> 为大家贴心的准备了**正则项**公式：
->
-> $\Omega(f)=\sum[\gamma T+\frac{1}{2}\lambda \left \| w \right \|_{2}+\alpha \left \|w  \right \|_{1}]$
+> ----以下是**正则项**参数-----
 >
 > **gamma**：默认是0，别名是 min_split_loss，gamma值越大，算法越保守（越不容易过拟合）；[0，∞]
 >
@@ -297,9 +274,8 @@ $obj(\theta)=\sum{[y_i \mathrm{In}(1+e^{-\hat{y_i}})+(1-y_i)\mathrm{In}(1+e^{\ha
 >
 > **alpha**：默认是0，别名是reg_alpha，L1 正则化项的权重系数，越大模型越保守；
 >
-> 
 >
-> -----------------------------------------**以下可以不看**-----------------------------------------------------
+> ------**以下可以不看**-------
 >
 > min_child_weight：默认是1，决定最小叶子节点样本权重和，加权和低于这个值时，就不再分裂产生新的叶子节点。当它的值较大时，可以避免模型学习到局部的特殊样本。但如果这个值过高，会导致欠拟合。[0，∞]
 > max_delta_step：默认是0，这参数限制每颗树权重改变的最大步长。如果是 0 意味着没有约束。如果是正值那么这个算法会更保守，通常不需要设置。[0，∞]
