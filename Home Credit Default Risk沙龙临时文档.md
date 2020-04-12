@@ -2,61 +2,35 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 #  流程速览：
-### 1. 逛一下Kaggle网站  （10min）
-
+#### 1. 逛一下Kaggle网站  （10min）
 - 2min : 逛主界面
 - 4min  : 浏览今天题目：Home credit default risk
+- 4min : -----**讨论**-----
 
-- 4min ：-----**讨论**-----
-
-  
-
-### 2. A quick simple solution （10min）
-
+#### 2. A quick simple solution （10min）
 - 3min : 看代码
-
 - 5min：主持人统一过一遍
-
 - 2min ：-----**讨论**-----
-
   
-
-### 3. 从逻辑回归→回归树→boost家族（10min）
-
+#### 3. 从逻辑回归→回归树→boost家族（10min）
 - 2min ：逻辑回归的 ***极大似然估计***
-
 - 2min ：用决策树来处理***似然函数***
-
 - 4min ：基于加法模型的Boost系列
-
 - 2min ：-----**讨论**-----
 
-  
-
-### 4. 特征工程与featuretools （10min）
-
+#### 4. 特征工程与featuretools （10min）
 - 2min ：Featuretools
 - 3min ：自编码器
 - 2min ：“业务含义”造变量
 - 3min ：-----**讨论**-----
 
-
-
-### 5. “剑走偏锋”还是“旁门左道”（10min）
-
+#### 5. “剑走偏锋”还是“旁门左道”（10min）
 - 4min ：主流高分方案： **stacking** & **blending**
-
 - 6min ：“**剑走偏锋**”高分方案
 
-  
-
-### 6. 讨论
-
-
+#### 6. 讨论
 
 # 一、Kaggle是个啥？
-
-
 
 ![kaggle介绍](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/image-20200411224433386.png)
 
