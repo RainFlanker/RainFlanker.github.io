@@ -61,11 +61,11 @@
 
 ​		测试数据集上的**AUC**
 
-# 三、快速上手：A simple & quick solution
+# 二、快速上手：A simple & quick solution
 
 我们来看看：一个最简单的**逻辑回归**建模，要经历哪些**典型步骤**
 
-### 3.1 利用pandas.read_csv()读取数据
+### 2.1 利用pandas.read_csv()读取数据
 ```python
 app_train = pd.read_csv('../input/application_train.csv')
 app_test = pd.read_csv('../input/application_test.csv')
@@ -77,7 +77,7 @@ installments_payments = pd.read_csv('../input/installments_payments.csv')
 credit_card_balance = pd.read_csv('../input/credit_card_balance.csv')
 ```
 
-### 3.2 数据处理
+### 2.2 数据处理
 
 #### (1) 衍生变量：统计客户的历史贷款次数
 ```python
@@ -175,7 +175,7 @@ from sklearn.preprocessing import LabelEncoder
 all_data[col] = LabelEncoder().fit_transform(all_data[col])
 all_data = pd.get_dummies(all_data)
 ```
-### 3.3 训练模型：逻辑回归  
+### 2.3 训练模型：逻辑回归  
 逻辑回归：LogisticRegression()
 
 ```python
@@ -188,5 +188,5 @@ Y_pred = logreg.predict_proba(X_test)[:,1]
 请问：    
 `LogisticRegression(random_state=0, class_weight='balanced', C=100)`里面的参数设置起到什么作用呢？
 
-# 四、从逻辑回归 → XGBoost
+# 三、从逻辑回归 → XGBoost
 
