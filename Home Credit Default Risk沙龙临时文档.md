@@ -59,7 +59,9 @@
 
 #### (3)  结果评判标准
 
-​		测试数据集上的**AUC**
+​		测试数据集上的**AUC**    
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 # 二、快速上手：A simple & quick solution
 
@@ -188,6 +190,8 @@ Y_pred = logreg.predict_proba(X_test)[:,1]
 请问：    
 `LogisticRegression(random_state=0, class_weight='balanced', C=100)`里面的参数设置起到什么作用呢？
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 # 三、从逻辑回归 → XGBoost 
 
 ### 3.1 逻辑回归Logistic Regression
@@ -278,3 +282,4 @@ Y_pred = logreg.predict_proba(X_test)[:,1]
 >
 > **alpha**：默认是0，别名是reg_alpha，L1 正则化项的权重系数，越大模型越保守；
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - 
