@@ -252,7 +252,6 @@ Y_pred = logreg.predict_proba(X_test)[:,1]
 
 #### （3）瞅一瞅XGBoost
 
-1. 目标函数：***LogLoss***(对数损失函数)  **+**  ***Regularization***(正则项)
 ![XGboost公式](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/XGBoost%E5%85%AC%E5%BC%8F.png)
 
 2. 部分参数一览
