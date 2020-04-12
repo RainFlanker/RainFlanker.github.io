@@ -38,7 +38,7 @@
 
 ​	有着丰富的**数据挖掘**比赛题目，大量公开的**代码方案**
 
-### 1.2 今天的topic：Home Credit Default Risk
+### 1.2 今天的topic：**Home Credit Default Risk**
 
 #### (1)  业务背景（目标是什么）
 
