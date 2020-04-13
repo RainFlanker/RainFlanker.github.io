@@ -195,7 +195,7 @@ Y_pred = logreg.predict_proba(X_test)[:,1]
 
 ### 3.1 逻辑回归Logistic Regression
 
-![逻辑回归公式](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E5%85%AC%E5%BC%8F-%E5%9B%9E%E5%88%B0sklearn.png)
+![逻辑回归公式](https://github.com/RainFlanker/rainflanker.github.io/blob/master/images/logit.png)
 
 大都是：基于**一阶梯度、二阶梯度**迭代寻找w, b；
 
